@@ -62,7 +62,26 @@ public class PhotoGalleryFragment extends Fragment{
         }
     }
 
-
+    private class PhotoAdapter extends RecyclerView.Adapter<PhotoHolder>{
+        private List<GalleryItem> mGalleryItems;
+        public PhotoAdapter(List<GalleryItem> galleryItems){
+            mGalleryItems = galleryItems;
+        }
+        @Override
+        public PhotoHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
+            TextView textView = new TextView ( getActivity () );
+            return new PhotoHolder ( textView );
+        }
+        @Override
+        public void onBindViewHolder(PhotoHolder photoHolder, int position){
+            GalleryItem galleryItem = mGalleryItems.get ( position );
+            photoHolder.bindGalleryItem ( galleryItem );
+        }
+        @Override
+        public int getItemCount(){
+            return mGalleryItems.size ();
+        }
+    }
 
     private class FetchItemsTask extends AsyncTask<Void,Void,List<GalleryItem>>{
         @Override
