@@ -43,6 +43,11 @@ public class PhotoGalleryFragment extends Fragment{
         return v;
     }
     //添加setupAdapter
+    private void setupAdapter(){
+        if (isAdded ()){
+            mPhotoRecyclerView.setAdapter ( new PhotoAdapter(mItems) );
+        }
+    }
 
     //383
     private class PhotoHolder extends RecyclerView.ViewHolder{
@@ -56,6 +61,8 @@ public class PhotoGalleryFragment extends Fragment{
             mTitleTextView.setText ( item.toString () );
         }
     }
+
+
 
     private class FetchItemsTask extends AsyncTask<Void,Void,List<GalleryItem>>{
         @Override
