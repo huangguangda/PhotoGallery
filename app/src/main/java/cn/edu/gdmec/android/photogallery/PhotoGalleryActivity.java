@@ -5,11 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class PhotoGalleryActivity extends SingleFragmentActivity {
- /* @Override
-    protected Fragment createFragment{
-        return NerdLauncherFragment.newInstance();
-    }*/
-    //创建
+
 
     @Override
     protected Fragment createFragment() {
