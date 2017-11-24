@@ -1,8 +1,11 @@
 package cn.edu.gdmec.android.photogallery;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +19,8 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.attr.bitmap;
 
 /**
  * Created by Jack on 2017/11/22.
@@ -36,7 +41,20 @@ public class PhotoGalleryFragment extends Fragment{
         setRetainInstance ( true );
         new FetchItemsTask ().execute (  );
 
-        mThumbnailDownloader = new ThumbnailDownloader<> ();
+        Handler responseHandler = new Handler (  );
+        mThumbnailDownloader = new ThumbnailDownloader<> (responseHandler);
+        mThumbnailDownloader.setThumbnailDownloadListener (
+                new ThumbnailDownloader.ThumbnailDownloadListener<PhotoHolder> (  ){
+                    @Override
+                    public void onThumbnailDownloaded(PhotoHolder photoHolder, Bitmap bitmap) {
+                        Drawable drawable = new BitmapDrawable ( getResources (), bitmap );
+                        photoHolder.bindDrawable ( drawable );
+
+                    }
+
+                }
+        );
+
         mThumbnailDownloader.start ();
         mThumbnailDownloader.getLooper ();
         Log.i ( TAG, "Background thread started" );
@@ -50,6 +68,14 @@ public class PhotoGalleryFragment extends Fragment{
         setupAdapter();
         return v;
     }
+
+    //406
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView ();
+        mThumbnailDownloader.clearQueue ();
+    }
+
     @Override
     public void onDestroy(){
         super.onDestroy ();
