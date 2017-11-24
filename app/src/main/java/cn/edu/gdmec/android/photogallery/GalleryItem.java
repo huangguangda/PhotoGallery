@@ -8,9 +8,9 @@ public class GalleryItem {
     private String mCaption;
     private String mId;
     private String mUrl;
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return mCaption;
     }
 
@@ -24,5 +24,9 @@ public class GalleryItem {
 
     public void setUrl(String url) {
         mUrl=url;
+    }
+
+    public String getUrl() {
+        return mUrl;
     }
 }
